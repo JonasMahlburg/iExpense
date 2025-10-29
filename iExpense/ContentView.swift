@@ -7,30 +7,32 @@
 
 import SwiftUI
 
-struct SecondView: View{
-    @Environment(\.dismiss) var dismiss
-    var name: String
-    
-    var body: some View{
-        Text("Hallo \(name)!")
-        Text("🎅🏻")
-            .font(.title)
-        Button("Gehe zurück"){
-            dismiss()
-        }
-    }
-}
-
 struct ContentView: View {
-    @State private var showingSheet = false
+    @State private var numbers = [Int]()
+    @State private var currentNumber = 1
     
     var body: some View {
-        Button("Sag dem Weihnachtsmann hallo 🎅🏻"){
-            showingSheet.toggle()
+        NavigationStack{
+            VStack{
+                List{
+                    ForEach(numbers, id: \.self){
+                        Text("Reihe \($0)")
+                    }
+                    .onDelete(perform: removeRow)
+                }
+                Button("Hinzufügen"){
+                    numbers.append(currentNumber)
+                    currentNumber += 1
+                }
+            }
+            .toolbar{
+                EditButton()
+            }
         }
-        .sheet(isPresented: $showingSheet){
-            SecondView(name: "Weihnachtsmann")
-        }
+
+    }
+    func removeRow(at offsets: IndexSet){
+        numbers.remove(atOffsets: offsets)
     }
 }
 
