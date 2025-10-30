@@ -54,7 +54,8 @@ struct ContentView: View {
                         
                         Spacer()
                         
-                        Text(item.amount, format: .currency(code: "Euro"))
+                        Text(item.amount,  format: .currency(code: Locale.current.currency?.identifier ?? "USD"))
+                            .foregroundStyle(item.amount < 10 ? .blue : (item.amount > 100 ? .red : .primary))
                     }
                 }
                 .onDelete(perform: removeItems)
@@ -79,6 +80,3 @@ struct ContentView: View {
 #Preview {
     ContentView()
 }
-
-
-
